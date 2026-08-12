@@ -13,5 +13,17 @@ function patch(){
   if(e.target.closest('.sidebar-item,.nav-btn,.nav-logo'))hideSecurity();
  },true);
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',patch,{once:true});else patch();
+function loadNavigationV2(){
+ if(!document.querySelector('link[data-sdl-nav-v2]')){
+  const link=document.createElement('link');
+  link.rel='stylesheet';link.href='./assets/app-navigation.css?v=2';link.dataset.sdlNavV2='true';
+  document.head.appendChild(link);
+ }
+ if(!document.querySelector('script[data-sdl-nav-v2]')){
+  const script=document.createElement('script');
+  script.src='./assets/app-navigation.js?v=2';script.defer=true;script.dataset.sdlNavV2='true';
+  document.body.appendChild(script);
+ }
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){patch();loadNavigationV2();},{once:true});else{patch();loadNavigationV2();}
 })();
