@@ -28,7 +28,7 @@ function loadNavigationV2(){
 function loadLocalization(){
  if(document.querySelector('script[data-sdl-i18n]'))return;
  const script=document.createElement('script');
- script.src='./assets/i18n-pt.js?v=1';script.defer=true;script.dataset.sdlI18n='true';
+ script.src='./assets/i18n-pt.js?v=2';script.defer=true;script.dataset.sdlI18n='true';
  document.body.appendChild(script);
 }
 function boot(){patch();loadNavigationV2();loadLocalization();}
