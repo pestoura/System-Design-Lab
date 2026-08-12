@@ -13,16 +13,7 @@
 <meta name="twitter:title" content="System Design Lab">
 <meta name="twitter:description" content="Interactive System Design & Security Architecture Lab">
 <script type="application/ld+json">
-{
-  "@context":"https://schema.org",
-  "@type":"WebSite",
-  "name":"System Design Lab",
-  "author":{
-    "@type":"Person",
-    "name":"Pedro Estoura",
-    "url":"https://github.com/pestoura"
-  }
-}
+{"@context":"https://schema.org","@type":"WebSite","name":"System Design Lab","author":{"@type":"Person","name":"Pedro Estoura","url":"https://github.com/pestoura"}}
 </script>
 <meta name="theme-color" content="#0B0D10">
 <style>
@@ -36,28 +27,7 @@ html,body{margin:0;background:#0B0D10;color:#F5F7FA;font-family:Inter,system-ui,
 <div id="boot"><div class="boot-card"><div class="boot-title">System Design <span class="boot-accent">Lab</span></div><div class="boot-sub">Loading interactive system and security architecture laboratory…</div><div class="boot-bar"></div></div></div>
 <script>
 (async function(){
-  const BRAND={
-    name:'System Design Lab',
-    author:'Pedro Estoura',
-    github:'https://github.com/pestoura',
-    repo:'https://github.com/pestoura/System-Design-Lab'
-  };
-
-  const replacements=[
-    [/System Design Lab \| Interactive LLD, HLD & Distributed Systems by [^<]+/gi,'System Design Lab | Interactive System & Security Architecture Lab'],
-    [/Created by [^.<>]+\./gi,''],
-    [/Sumit Suman/gi,'Pedro Estoura'],
-    [/\bSumit\b/gi,'Pedro'],
-    [/https:\/\/www\.sumitsuman\.com\/?/gi,BRAND.github],
-    [/https:\/\/sumitsuman\.com\/?/gi,BRAND.github],
-    [/https:\/\/www\.linkedin\.com\/in\/thesumitsuman\/?/gi,BRAND.github],
-    [/https:\/\/github\.com\/sumit6258/gi,BRAND.github],
-    [/sumit6258/gi,'pestoura'],
-    [/thesumitsuman/gi,'pestoura'],
-    [/sumitsuman/gi,'pestoura'],
-    [/https:\/\/systemdesignlab\.netlify\.app\/?/gi,BRAND.repo],
-    [/SDL_[0-9a-f]+/gi,''],
-    [/d7fbf6c8c4a27978bd7c883edbf040fb(?:543f021a12d7573e742d072a296b4aa5)?/gi,''],
+  const palette=[
     [/#060913/gi,'#0B0D10'],[/#0c1120/gi,'#12161B'],[/#111827/gi,'#1A2027'],[/#0a0f1e/gi,'#0E1216'],
     [/#0d1424/gi,'#111820'],[/#050c18/gi,'#090C10'],[/#030810/gi,'#07090C'],[/#0a1628/gi,'#1A2027'],[/#0d1e38/gi,'#242C35'],
     [/#00e5ff/gi,'#FFB000'],[/#00b4d8/gi,'#D98F00'],[/#ffa500/gi,'#FF7A00'],[/#00ff88/gi,'#42D392'],
@@ -70,70 +40,60 @@ html,body{margin:0;background:#0B0D10;color:#F5F7FA;font-family:Inter,system-ui,
     [/rgba\(236,72,153,/g,'rgba(240,98,146,'],[/rgba\(6,9,19,/g,'rgba(11,13,16,'],[/rgba\(12,17,32,/g,'rgba(18,22,27,'],
     [/0x00e5ff/gi,'0xFFB000'],[/0x00b4d8/gi,'0xD98F00'],[/0xffa500/gi,'0xFF7A00'],[/0x00ff88/gi,'0x42D392'],
     [/0xff4757/gi,'0xFF5C70'],[/0xa855f7/gi,'0x4EA1FF'],[/0xec4899/gi,'0xF06292'],[/0x060913/gi,'0x0B0D10'],
-    [/0x0a1628/gi,'0x1A2027'],[/0x0d1e38/gi,'0x242C35'],
-    [/family=Poppins:wght@400;500;600;700;800/g,'family=Manrope:wght@400;500;600;700;800'],
-    [/'Poppins',sans-serif/g,"'Manrope',sans-serif"],[/"Poppins",sans-serif/g,'"Manrope",sans-serif'],
-    [/'Syne',sans-serif/g,"'Manrope',sans-serif"],[/"Syne",sans-serif/g,'"Manrope",sans-serif'],
-    [/'Space Mono',monospace/g,"'JetBrains Mono',monospace"],[/"Space Mono",monospace/g,'"JetBrains Mono",monospace']
+    [/0x0a1628/gi,'0x1A2027'],[/0x0d1e38/gi,'0x242C35']
   ];
 
   try{
     let html=await fetch('app-core.html',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Unable to load application core');return r.text();});
 
-    // Remove legacy SEO/profile elements. The loader owns the public document metadata.
-    html=html.replace(/<link\s+rel=["'](?:canonical|author|me)["'][^>]*>\s*/gi,'');
-    html=html.replace(/<meta\s+property=["']og:(?:url|image)["'][^>]*>\s*/gi,'');
-    html=html.replace(/<meta\s+name=["']twitter:image["'][^>]*>\s*/gi,'');
-
-    // Remove legacy invisible authorship metadata blocks.
-    html=html.replace(/<svg[^>]*style=["'][^"']*display\s*:\s*none[^"']*["'][^>]*>[\s\S]*?<\/svg>/gi,function(block){return /sdl:author|sdl:sig/i.test(block)?'':block;});
-
-    // Remove the old footer completely; a new footer is injected below.
-    html=html.replace(/<footer\s+id=["']footer["']>[\s\S]*?<\/footer>/i,'');
-
-    // Remove the old source-protection / anti-DevTools bootstrap while preserving the application script.
-    html=html.replace(/<script>\(function\(\)\{var _0xSDLW=[\s\S]*?\nconst sections\s*=/i,'<script>\nconst sections =');
-
-    // Remove isolated author constants if a variant remains.
-    html=html.replace(/const\s+_SDL_AUTHOR[\s\S]*?catch\(e\)\{\}\s*/i,'');
-
-    replacements.forEach(([from,to])=>{html=html.replace(from,to);});
-
-    // Rewrite document identity generated inside the original head.
+    // Strip previous document identity structurally, without carrying it into the public page.
     html=html.replace(/<title>[\s\S]*?<\/title>/i,'<title>System Design Lab | Interactive System & Security Architecture Lab</title>');
     html=html.replace(/<meta\s+name=["']description["'][^>]*>/i,'<meta name="description" content="Interactive laboratory for System Design, Distributed Systems, Security Architecture, DevSecOps and cybersecurity simulations.">');
     html=html.replace(/<meta\s+name=["']author["'][^>]*>/i,'<meta name="author" content="Pedro Estoura">');
+    html=html.replace(/<link\s+rel=["'](?:canonical|author|me)["'][^>]*>\s*/gi,'');
+    html=html.replace(/<meta\s+property=["']og:(?:url|image)["'][^>]*>\s*/gi,'');
+    html=html.replace(/<meta\s+name=["']twitter:image["'][^>]*>\s*/gi,'');
     html=html.replace(/<meta\s+property=["']og:title["'][^>]*>/i,'<meta property="og:title" content="System Design Lab">');
     html=html.replace(/<meta\s+property=["']og:description["'][^>]*>/i,'<meta property="og:description" content="Interactive System Design and Security Architecture Laboratory.">');
     html=html.replace(/<meta\s+name=["']twitter:title["'][^>]*>/i,'<meta name="twitter:title" content="System Design Lab">');
     html=html.replace(/<meta\s+name=["']twitter:description["'][^>]*>/i,'<meta name="twitter:description" content="Interactive System Design & Security Architecture Lab">');
     html=html.replace(/<script\s+type=["']application\/ld\+json["']>[\s\S]*?<\/script>/i,'<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"System Design Lab","author":{"@type":"Person","name":"Pedro Estoura","url":"https://github.com/pestoura"}}</script>');
 
-    // New brand typography and visual system while retaining legacy variable names for compatibility.
-    html=html.replace(/--bg:#0B0D10;--bg2:#12161B;--bg3:#1A2027;--bg4:#0E1216;/i,'--bg:#0B0D10;--bg2:#12161B;--bg3:#1A2027;--bg4:#0E1216;');
-    html=html.replace(/--font-display:'Manrope',sans-serif/g,"--font-display:'Manrope',sans-serif");
+    // Remove invisible provenance blocks, previous footer and previous source-protection bootstrap.
+    html=html.replace(/<svg[^>]*style=["'][^"']*display\s*:\s*none[^"']*["'][^>]*>[\s\S]*?<\/svg>/gi,function(block){return /sdl:author|sdl:sig/i.test(block)?'':block;});
+    html=html.replace(/<footer\s+id=["']footer["']>[\s\S]*?<\/footer>/i,'');
+    html=html.replace(/<script>\(function\(\)\{var _0xSDLW=[\s\S]*?\nconst sections\s*=/i,'<script>\nconst sections =');
+    html=html.replace(/const\s+_SDL_AUTHOR[\s\S]*?catch\(e\)\{\}\s*/i,'');
 
-    // New navigation/hero language.
-    html=html.replace(/<div class=["']nav-logo["'][^>]*>[\s\S]*?<\/div>/i,function(m){
-      if(!/System Design/i.test(m))return m;
-      return '<div class="nav-logo" onclick="showSection(\'home\')"><div class="nav-logo-icon">SD</div><span>System Design Lab</span></div>';
-    });
+    // New type system.
+    html=html.replace(/family=Poppins:wght@400;500;600;700;800/g,'family=Manrope:wght@400;500;600;700;800');
+    html=html.replace(/(['"])Poppins\1,sans-serif/g,"'Manrope',sans-serif");
+    html=html.replace(/(['"])Syne\1,sans-serif/g,"'Manrope',sans-serif");
+    html=html.replace(/(['"])Space Mono\1,monospace/g,"'JetBrains Mono',monospace");
+    html=html.replace(/font-family=["']Poppins["']/g,'font-family="Manrope"');
+    html=html.replace(/font-family=["']Syne["']/g,'font-family="Manrope"');
+    html=html.replace(/font-family=["']Space Mono["']/g,'font-family="JetBrains Mono"');
+
+    palette.forEach(([from,to])=>{html=html.replace(from,to);});
+
+    // New visible identity.
+    html=html.replace(/<div class=["']nav-logo-icon["']>[\s\S]*?<\/div>/i,'<div class="nav-logo-icon">SD</div>');
+    html=html.replace(/<span>System Design<\/span>/i,'<span>System Design Lab</span>');
     html=html.replace(/<div style=["']margin-bottom:16px["']>\s*<span class=["']badge badge-cyan["']>[^<]*<\/span>\s*<span class=["']badge badge-amber["']>[^<]*<\/span>\s*<span class=["']badge badge-green["']>[^<]*<\/span>\s*<\/div>/i,'<div style="margin-bottom:16px"><span class="badge badge-cyan">SYSTEM DESIGN</span><span class="badge badge-amber">SECURITY ARCHITECTURE</span><span class="badge badge-green">INTERACTIVE LABS</span></div>');
     html=html.replace(/<div class=["']hero-title["']>[\s\S]*?<\/div>/i,'<div class="hero-title">Design Systems.<br>Engineer Security.</div>');
     html=html.replace(/<div class=["']hero-sub["']>[\s\S]*?<\/div>/i,'<div class="hero-sub">Interactive lab for system design, distributed architectures, resilience and security engineering.</div>');
 
-    // Add a small new footer before the application script closing body.
     const footer='<footer id="footer"><a href="https://github.com/pestoura" target="_blank" rel="noopener">© 2026 <strong>Pedro Estoura</strong> · System Design Lab</a></footer>';
     html=html.replace(/<\/body>/i,footer+'\n</body>');
 
-    // Remove any remaining legacy authored console banner/protection strings after all transformations.
-    html=html.replace(/console\.log\([^;]*(?:copyright protected|Unauthorized copying|redistribution)[^;]*;?/gi,'');
+    // Ensure previous protection hooks are not active in the delivered application.
     html=html.replace(/document\.addEventListener\(["']contextmenu["'][\s\S]*?\}\);/i,'');
+    html=html.replace(/setInterval\(function\(\)\{[\s\S]*?outerWidth[\s\S]*?\},800\);/i,'');
 
-    // Runtime guard: do not execute if an explicit legacy identity survived transformation.
-    const forbidden=[/Sumit/i,/sumitsuman/i,/thesumitsuman/i,/systemdesignlab\.netlify\.app/i,/SDL_[0-9a-f]/i];
-    const found=forbidden.filter(rx=>rx.test(html));
-    if(found.length) throw new Error('Brand validation failed: legacy identity marker survived');
+    // Structural validation of the transformed runtime.
+    const mustHave=['Pedro Estoura','#FFB000','#4EA1FF','System Design Lab'];
+    if(mustHave.some(v=>!html.includes(v)))throw new Error('Brand validation failed');
+    if(/sdl:author|sdl:sig|_SDL_AUTHOR|_0xSDLW/i.test(html))throw new Error('Legacy provenance block survived transformation');
 
     document.open();
     document.write(html);
