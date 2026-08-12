@@ -44,10 +44,16 @@ function loadAnimatedCards(){
  }
 }
 function loadLocalization(){
- if(document.querySelector('script[data-sdl-i18n]'))return;
- const script=document.createElement('script');
- script.src='./assets/i18n-pt.js?v=2';script.defer=true;script.dataset.sdlI18n='true';
- document.body.appendChild(script);
+ if(!document.querySelector('script[data-sdl-i18n]')){
+  const script=document.createElement('script');
+  script.src='./assets/i18n-pt.js?v=2';script.async=false;script.dataset.sdlI18n='true';
+  document.body.appendChild(script);
+ }
+ if(!document.querySelector('script[data-sdl-core-i18n]')){
+  const core=document.createElement('script');
+  core.src='./assets/i18n-core-pages-pt.js?v=1';core.async=false;core.dataset.sdlCoreI18n='true';
+  document.body.appendChild(core);
+ }
 }
 function boot(){patch();loadNavigationV2();loadSoftTheme();loadAnimatedCards();loadLocalization();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
