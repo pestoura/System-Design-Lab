@@ -55,6 +55,9 @@ function loadLocalization(){
  addScript('script[data-sdl-core-extended-i18n]','./assets/i18n-core-extended-pt.js?v=1','data-sdl-core-extended-i18n');
  addScript('script[data-sdl-core-content-i18n]','./assets/i18n-core-content-pt.js?v=1','data-sdl-core-content-i18n');
  addScript('script[data-sdl-domain-pack]','./assets/i18n-domain-pack-pt.js?v=1','data-sdl-domain-pack');
+ addScript('script[data-sdl-interactive-pack]','./assets/i18n-interactive-pack-pt.js?v=1','data-sdl-interactive-pack');
+ addScript('script[data-sdl-patterns-pack]','./assets/i18n-patterns-pack-pt.js?v=1','data-sdl-patterns-pack');
+ addScript('script[data-sdl-dynamic-pack]','./assets/i18n-dynamic-pack-pt.js?v=1','data-sdl-dynamic-pack');
  addScript('script[data-sdl-i18n-sync]','./assets/i18n-core-language-sync.js?v=1','data-sdl-i18n-sync');
 }
 function boot(){patch();loadNavigationV2();loadSoftTheme();loadAnimatedCards();loadLocalization();}
