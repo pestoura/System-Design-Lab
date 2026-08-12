@@ -34,7 +34,7 @@ function loadSoftTheme(){
 function loadAnimatedCards(){
  if(!document.querySelector('link[data-sdl-animated-cards]')){
   const link=document.createElement('link');
-  link.rel='stylesheet';link.href='./assets/animated-architecture-cards.css?v=1';link.dataset.sdlAnimatedCards='true';
+  link.rel='stylesheet';link.href='./assets/animated-architecture-cards.css?v=2';link.dataset.sdlAnimatedCards='true';
   document.head.appendChild(link);
  }
  if(!document.querySelector('script[data-sdl-animated-cards]')){
