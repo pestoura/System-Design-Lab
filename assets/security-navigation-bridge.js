@@ -25,5 +25,12 @@ function loadNavigationV2(){
   document.body.appendChild(script);
  }
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){patch();loadNavigationV2();},{once:true});else{patch();loadNavigationV2();}
+function loadLocalization(){
+ if(document.querySelector('script[data-sdl-i18n]'))return;
+ const script=document.createElement('script');
+ script.src='./assets/i18n-pt.js?v=1';script.defer=true;script.dataset.sdlI18n='true';
+ document.body.appendChild(script);
+}
+function boot(){patch();loadNavigationV2();loadLocalization();}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
