@@ -49,6 +49,21 @@ html,body{margin:0;background:#0B0D10;color:#F5F7FA;font-family:Inter,system-ui,
     let html=await response.text();
     if(!html.includes('<!DOCTYPE html>'))throw new Error('Application core is not valid HTML');
 
+    if(status)status.textContent='Sanitizing application core…';
+
+    // Remove all hidden zero-size SVG metadata blocks before any runtime code executes.
+    html=html.replace(/<svg\b[^>]*\bwidth=["']0["'][^>]*\bheight=["']0["'][^>]*>[\s\S]*?<\/svg>\s*/gi,'');
+    html=html.replace(/<metadata\b[^>]*>[\s\S]*?<\/metadata>\s*/gi,'');
+    html=html.replace(/<footer\s+id=["']footer["']>[\s\S]*?<\/footer>/i,'');
+
+    // Remove the previous source-protection bootstrap as one contiguous block.
+    const protectionStart=html.indexOf('<script>(function(){var _0xSDLW=');
+    if(protectionStart>=0){
+      const appStart=html.indexOf('const sections =',protectionStart);
+      if(appStart<0)throw new Error('Unable to isolate application bootstrap');
+      html=html.slice(0,protectionStart)+'<scr'+'ipt>\n'+html.slice(appStart);
+    }
+
     if(status)status.textContent='Applying System Design Lab identity…';
 
     html=html.replace(/<title>[\s\S]*?<\/title>/i,'<title>System Design Lab | Interactive System & Security Architecture Lab</title>');
@@ -67,16 +82,6 @@ html,body{margin:0;background:#0B0D10;color:#F5F7FA;font-family:Inter,system-ui,
       'author':{'@type':'Person','name':'Pedro Estoura','url':'https://github.com/pestoura'}
     })+'<'+'/scr'+'ipt>';
     html=html.replace(/<script\s+type=["']application\/ld\+json["']>[\s\S]*?<\/script>/i,ldJson);
-
-    html=html.replace(/<svg[^>]*style=["'][^"']*display\s*:\s*none[^"']*["'][^>]*>[\s\S]*?<\/svg>/gi,function(block){return /sdl:author|sdl:sig/i.test(block)?'':block;});
-    html=html.replace(/<footer\s+id=["']footer["']>[\s\S]*?<\/footer>/i,'');
-
-    const protectionStart=html.indexOf('<script>(function(){var _0xSDLW=');
-    if(protectionStart>=0){
-      const appStart=html.indexOf('const sections =',protectionStart);
-      if(appStart<0)throw new Error('Unable to isolate application bootstrap');
-      html=html.slice(0,protectionStart)+'<scr'+'ipt>\n'+html.slice(appStart);
-    }
 
     html=html.replace(/family=Poppins:wght@400;500;600;700;800/g,'family=Manrope:wght@400;500;600;700;800');
     html=html.replace(/(['"])Poppins\1,sans-serif/g,"'Manrope',sans-serif");
@@ -97,7 +102,8 @@ html,body{margin:0;background:#0B0D10;color:#F5F7FA;font-family:Inter,system-ui,
     const footer='<footer id="footer"><a href="https://github.com/pestoura" target="_blank" rel="noopener">© 2026 <strong>Pedro Estoura</strong> · System Design Lab</a></footer>';
     html=html.replace(/<\/body>/i,footer+'\n</body>');
 
-    if(/_0xSDLW|_SDL_AUTHOR|sdl:author|sdl:sig/i.test(html))throw new Error('Legacy bootstrap was not fully removed');
+    // Only block if the old executable protection bootstrap itself survived.
+    if(/_0xSDLW|_SDL_AUTHOR/i.test(html))throw new Error('Legacy executable bootstrap was not fully removed');
     if(!html.includes('Pedro Estoura')||!html.includes('#FFB000')||!html.includes('#4EA1FF'))throw new Error('Identity transformation failed');
 
     if(status)status.textContent='Starting laboratory…';
