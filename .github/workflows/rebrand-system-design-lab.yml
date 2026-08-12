@@ -1,0 +1,200 @@
+name: Rebrand System Design Lab
+
+on:
+  push:
+    paths:
+      - '.github/workflows/rebrand-system-design-lab.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  rebrand:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Apply new identity and palette
+        shell: bash
+        run: |
+          python <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('index.html')
+          s = path.read_text(encoding='utf-8')
+
+          # Remove an initial legacy authorship/copyright comment if present.
+          s = re.sub(
+              r'^\s*<!--[\s\S]*?(?:Sumit\s+Suman|SDL_[0-9a-fA-F]+)[\s\S]*?-->\s*',
+              '', s, count=1, flags=re.IGNORECASE
+          )
+
+          # Product identity / SEO.
+          s = re.sub(
+              r'<title>[\s\S]*?</title>',
+              '<title>System Design Lab | Interactive System & Security Architecture Lab</title>',
+              s, count=1, flags=re.IGNORECASE
+          )
+          s = re.sub(
+              r'<meta\s+name=["\']description["\']\s+content=["\'][^"\']*["\']\s*/?>',
+              '<meta name="description" content="Interactive laboratory for System Design, Distributed Systems, Security Architecture, DevSecOps and cybersecurity simulations.">',
+              s, count=1, flags=re.IGNORECASE
+          )
+          s = re.sub(
+              r'<meta\s+name=["\']author["\']\s+content=["\'][^"\']*["\']\s*/?>',
+              '<meta name="author" content="Pedro Estoura">',
+              s, count=1, flags=re.IGNORECASE
+          )
+
+          # Remove legacy canonical/profile/image URLs until a dedicated deployment URL exists.
+          for rel in ('canonical', 'author', 'me'):
+              s = re.sub(rf'<link\s+rel=["\']{rel}["\'][^>]*>\s*', '', s, flags=re.IGNORECASE)
+          for key in ('og:url', 'og:image'):
+              s = re.sub(rf'<meta\s+property=["\']{re.escape(key)}["\'][^>]*>\s*', '', s, flags=re.IGNORECASE)
+          s = re.sub(r'<meta\s+name=["\']twitter:image["\'][^>]*>\s*', '', s, flags=re.IGNORECASE)
+
+          meta_replacements = {
+              'og:title': 'System Design Lab',
+              'og:description': 'Interactive System Design and Security Architecture Laboratory.',
+          }
+          for key, value in meta_replacements.items():
+              s = re.sub(
+                  rf'<meta\s+property=["\']{re.escape(key)}["\']\s+content=["\'][^"\']*["\']\s*/?>',
+                  f'<meta property="{key}" content="{value}">',
+                  s, count=1, flags=re.IGNORECASE
+              )
+          twitter_replacements = {
+              'twitter:title': 'System Design Lab',
+              'twitter:description': 'Interactive System Design & Security Architecture Lab',
+          }
+          for key, value in twitter_replacements.items():
+              s = re.sub(
+                  rf'<meta\s+name=["\']{re.escape(key)}["\']\s+content=["\'][^"\']*["\']\s*/?>',
+                  f'<meta name="{key}" content="{value}">',
+                  s, count=1, flags=re.IGNORECASE
+              )
+
+          new_jsonld = '''<script type="application/ld+json">
+          {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "System Design Lab",
+            "author": {
+              "@type": "Person",
+              "name": "Pedro Estoura",
+              "url": "https://github.com/pestoura"
+            }
+          }
+          </script>'''
+          s = re.sub(
+              r'<script\s+type=["\']application/ld\+json["\']>[\s\S]*?</script>',
+              new_jsonld, s, count=1, flags=re.IGNORECASE
+          )
+
+          # Remove/replace all remaining legacy identity references.
+          replacements = {
+              'https://github.com/sumit6258': 'https://github.com/pestoura',
+              'https://github.com/Sumit6258': 'https://github.com/pestoura',
+              'https://www.sumitsuman.com/': 'https://github.com/pestoura',
+              'https://www.sumitsuman.com': 'https://github.com/pestoura',
+              'https://sumitsuman.com/': 'https://github.com/pestoura',
+              'https://sumitsuman.com': 'https://github.com/pestoura',
+              'https://www.linkedin.com/in/thesumitsuman/': 'https://github.com/pestoura',
+              'https://systemdesignlab.netlify.app/': 'https://github.com/pestoura/System-Design-Lab',
+              'https://systemdesignlab.netlify.app': 'https://github.com/pestoura/System-Design-Lab',
+              'Sumit Suman': 'Pedro Estoura',
+          }
+          for old, new in replacements.items():
+              s = s.replace(old, new)
+          s = re.sub(r'SDL_[0-9a-fA-F]+', '', s)
+          # Any isolated legacy first-name/handle remnants are removed too.
+          s = re.sub(r'(?i)sumit6258', 'pestoura', s)
+          s = re.sub(r'(?i)thesumitsuman', 'pestoura', s)
+          s = re.sub(r'(?i)sumitsuman', 'pestoura', s)
+          s = re.sub(r'\bSumit\b', 'Pedro', s, flags=re.IGNORECASE)
+
+          # New visual language: Graphite + Amber + Steel Blue.
+          # Keep existing CSS variable names for compatibility with all simulations.
+          palette = {
+              '#060913': '#0B0D10',
+              '#0c1120': '#12161B',
+              '#111827': '#1A2027',
+              '#0a0f1e': '#0E1216',
+              '#00e5ff': '#FFB000',
+              '#00b4d8': '#D98F00',
+              '#ffa500': '#FF7A00',
+              '#00ff88': '#42D392',
+              '#ff4757': '#FF5C70',
+              '#a855f7': '#4EA1FF',
+              '#ec4899': '#F06292',
+              '#e8eaf6': '#F5F7FA',
+              '#9ca3af': '#B1BAC4',
+              '#6b7280': '#6F7A86',
+              '#82aaff': '#7DB7FF',
+              '#82ffdb': '#6EE7B7',
+              '#f78c6c': '#FF9A62',
+              '#546e7a': '#71808F',
+          }
+          for old, new in palette.items():
+              s = re.sub(re.escape(old), new, s, flags=re.IGNORECASE)
+
+          rgba = {
+              'rgba(0,229,255,': 'rgba(255,176,0,',
+              'rgba(0,180,216,': 'rgba(217,143,0,',
+              'rgba(255,165,0,': 'rgba(255,122,0,',
+              'rgba(0,255,136,': 'rgba(66,211,146,',
+              'rgba(255,71,87,': 'rgba(255,92,112,',
+              'rgba(168,85,247,': 'rgba(78,161,255,',
+              'rgba(236,72,153,': 'rgba(240,98,146,',
+          }
+          for old, new in rgba.items():
+              s = s.replace(old, new)
+
+          # Change the display typeface as part of the new visual identity.
+          s = s.replace(
+              'family=Poppins:wght@400;500;600;700;800',
+              'family=Manrope:wght@400;500;600;700;800'
+          )
+          s = s.replace("--font-display:'Poppins',sans-serif", "--font-display:'Manrope',sans-serif")
+          s = s.replace("font-family:'Poppins',sans-serif", "font-family:'Manrope',sans-serif")
+
+          # Validation: fail rather than commit a partial rebrand.
+          forbidden_text = [
+              r'(?i)sumit',
+              r'(?i)systemdesignlab\.netlify\.app',
+              r'(?i)sumitsuman\.com',
+              r'(?i)thesumitsuman',
+              r'SDL_[0-9a-fA-F]+',
+          ]
+          leftovers = [p for p in forbidden_text if re.search(p, s)]
+          old_colours = [
+              '#060913','#0c1120','#111827','#0a0f1e','#00e5ff','#00b4d8',
+              '#ffa500','#00ff88','#ff4757','#a855f7','#ec4899','#e8eaf6',
+              '#9ca3af','#6b7280'
+          ]
+          colour_leftovers = [c for c in old_colours if re.search(re.escape(c), s, re.IGNORECASE)]
+          if leftovers or colour_leftovers:
+              raise SystemExit(f'Rebrand validation failed. Legacy refs={leftovers}; legacy colours={colour_leftovers}')
+          if 'Pedro Estoura' not in s or '#FFB000' not in s or '#4EA1FF' not in s:
+              raise SystemExit('Rebrand validation failed: new identity markers are missing.')
+
+          path.write_text(s, encoding='utf-8')
+          print('Rebrand validation PASS')
+          print(f'Updated index.html: {len(s):,} characters')
+          PY
+
+      - name: Commit updated index
+        shell: bash
+        run: |
+          git config user.name "Pedro Estoura"
+          git config user.email "115967430+pestoura@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No changes required"
+            exit 0
+          fi
+          git commit -m "feat: establish Pedro Estoura identity and new visual palette"
+          git push
