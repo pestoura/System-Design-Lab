@@ -1,0 +1,29 @@
+/* Vendor / technology identity layer for the Architecture Builder */
+.sdl-vendor-preview{
+  display:flex;align-items:center;gap:10px;
+  margin:4px 0 12px;padding:10px 11px;
+  border:1px solid var(--border,#d7dde5);border-radius:12px;
+  background:rgba(255,255,255,.55);
+}
+.sdl-vendor-preview-icons{display:flex;align-items:center;gap:5px;min-width:28px}
+.sdl-vendor-preview img{
+  width:25px;height:25px;object-fit:contain;display:block;
+  filter:none!important;
+}
+.sdl-vendor-preview-fallback{
+  width:26px;height:26px;display:grid;place-items:center;border-radius:8px;
+  background:var(--surface-alt,#e7ebf0);border:1px solid var(--border,#d7dde5);
+  color:var(--text,#2f3742);font:700 10px/1 var(--font-code,monospace);
+}
+.sdl-vendor-preview-copy{min-width:0;display:flex;flex-direction:column;gap:2px}
+.sdl-vendor-preview-label{font-size:12px;font-weight:750;color:var(--text,#2f3742)}
+.sdl-vendor-preview-meta{font-size:10px;color:var(--text-soft,#66707d);line-height:1.35}
+.sdl-vendor-hint{font-size:10px;color:var(--text-faint,#8a94a3);margin:-5px 0 10px;line-height:1.45}
+
+body:not(.sdl-soft-theme) .sdl-vendor-preview{
+  background:rgba(255,255,255,.04);
+}
+
+@media(max-width:720px){
+  .sdl-vendor-preview{padding:9px}.sdl-vendor-preview img{width:22px;height:22px}
+}
