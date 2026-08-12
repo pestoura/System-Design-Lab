@@ -1,0 +1,137 @@
+/* System Design Lab — Animated Architecture Cards
+ * Original lightweight implementation inspired by interactive media-card patterns.
+ * No React/Tailwind dependency. */
+
+.sdl-path-card.sdl-animated-card{
+  --card-accent:#9FBDE5;
+  --card-accent-2:#C9D7EE;
+  --card-ink:#344150;
+  --card-glow:rgba(159,189,229,.24);
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  min-height:248px;
+  border-radius:20px!important;
+  transform-style:preserve-3d;
+  transition:transform .34s cubic-bezier(.2,.75,.25,1),box-shadow .34s ease,border-color .34s ease!important;
+  box-shadow:0 12px 30px rgba(74,86,105,.08)!important;
+}
+.sdl-path-card.sdl-animated-card.sdl-path-learn{--card-accent:#9FBDE5;--card-accent-2:#D5E1F2;--card-glow:rgba(159,189,229,.30)}
+.sdl-path-card.sdl-animated-card.sdl-path-build{--card-accent:#E6BE9C;--card-accent-2:#F2DDCA;--card-glow:rgba(230,190,156,.29)}
+.sdl-path-card.sdl-animated-card.sdl-path-simulate{--card-accent:#AFCFB7;--card-accent-2:#D7E7DA;--card-glow:rgba(175,207,183,.30)}
+.sdl-path-card.sdl-animated-card.sdl-path-security{--card-accent:#E4A99D;--card-accent-2:#F0D0C9;--card-glow:rgba(228,169,157,.29)}
+.sdl-path-card.sdl-animated-card.sdl-path-practice{--card-accent:#C4B6DF;--card-accent-2:#E1DAEE;--card-glow:rgba(196,182,223,.30)}
+
+.sdl-path-card.sdl-animated-card:hover,
+.sdl-path-card.sdl-animated-card:focus-within{
+  transform:translateY(-5px) rotateX(var(--sdl-tilt-y,0deg)) rotateY(var(--sdl-tilt-x,0deg))!important;
+  border-color:color-mix(in srgb,var(--card-accent) 72%, #fff 28%)!important;
+  box-shadow:0 22px 52px rgba(76,88,106,.14),0 0 0 1px var(--card-glow)!important;
+}
+
+.sdl-path-card.sdl-animated-card:after{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  border-radius:inherit;
+  background:radial-gradient(360px circle at var(--sdl-mx,76%) var(--sdl-my,20%),var(--card-glow),transparent 64%);
+  opacity:0;
+  z-index:0;
+  pointer-events:none;
+  transition:opacity .28s ease;
+}
+.sdl-path-card.sdl-animated-card:hover:after,
+.sdl-path-card.sdl-animated-card:focus-within:after{opacity:1}
+
+.sdl-arch-motion{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  opacity:.17;
+  transform:scale(1.02);
+  transition:opacity .34s ease,transform .6s cubic-bezier(.2,.75,.25,1),filter .34s ease;
+  pointer-events:none;
+  color:var(--card-accent);
+}
+.sdl-path-card.sdl-animated-card:hover .sdl-arch-motion,
+.sdl-path-card.sdl-animated-card:focus-within .sdl-arch-motion{
+  opacity:.76;
+  transform:scale(1.075) translate3d(0,-2px,0);
+  filter:saturate(1.04);
+}
+.sdl-arch-motion:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(90deg,rgba(255,255,255,.98) 0%,rgba(255,255,255,.76) 39%,rgba(255,255,255,.28) 72%,rgba(255,255,255,.1) 100%);
+  opacity:.88;
+  transition:opacity .35s ease;
+}
+.sdl-path-card.sdl-animated-card:hover .sdl-arch-motion:after,
+.sdl-path-card.sdl-animated-card:focus-within .sdl-arch-motion:after{opacity:.40}
+
+.sdl-arch-motion svg{width:100%;height:100%;display:block;overflow:visible}
+.sdl-arch-motion .sdl-line{fill:none;stroke:currentColor;stroke-width:1.45;stroke-linecap:round;stroke-dasharray:5 7;opacity:.72}
+.sdl-arch-motion .sdl-line.solid{stroke-dasharray:none;opacity:.42}
+.sdl-arch-motion .sdl-node{fill:#fff;stroke:currentColor;stroke-width:1.45}
+.sdl-arch-motion .sdl-node-fill{fill:var(--card-accent-2);stroke:currentColor;stroke-width:1.25}
+.sdl-arch-motion .sdl-chip{fill:rgba(255,255,255,.88);stroke:currentColor;stroke-width:1.25}
+.sdl-arch-motion .sdl-packet{fill:currentColor;filter:drop-shadow(0 0 5px var(--card-glow))}
+.sdl-arch-motion .sdl-soft{fill:var(--card-accent-2);opacity:.58}
+.sdl-arch-motion text{fill:var(--card-ink);font:600 6.8px/1 Inter,system-ui,sans-serif;letter-spacing:.02em}
+
+/* Animated packets / construction blocks */
+.sdl-path-card:hover .sdl-flow-a,.sdl-path-card:focus-within .sdl-flow-a{animation:sdlFlowA 2.2s linear infinite}
+.sdl-path-card:hover .sdl-flow-b,.sdl-path-card:focus-within .sdl-flow-b{animation:sdlFlowB 2.7s linear infinite}
+.sdl-path-card:hover .sdl-pulse,.sdl-path-card:focus-within .sdl-pulse{animation:sdlPulse 1.8s ease-in-out infinite}
+.sdl-path-card:hover .sdl-float-a,.sdl-path-card:focus-within .sdl-float-a{animation:sdlFloatA 2.8s ease-in-out infinite}
+.sdl-path-card:hover .sdl-float-b,.sdl-path-card:focus-within .sdl-float-b{animation:sdlFloatB 3.2s ease-in-out infinite}
+.sdl-path-card:hover .sdl-scan,.sdl-path-card:focus-within .sdl-scan{animation:sdlScan 2.4s ease-in-out infinite}
+.sdl-path-card:hover .sdl-draw,.sdl-path-card:focus-within .sdl-draw{animation:sdlDraw 2.8s ease-in-out infinite}
+
+@keyframes sdlFlowA{0%{offset-distance:0%;opacity:0}8%{opacity:1}92%{opacity:1}100%{offset-distance:100%;opacity:0}}
+@keyframes sdlFlowB{0%{offset-distance:0%;opacity:0}12%{opacity:.85}88%{opacity:.85}100%{offset-distance:100%;opacity:0}}
+@keyframes sdlPulse{0%,100%{opacity:.48;transform:scale(.94);transform-origin:center}50%{opacity:1;transform:scale(1.08)}}
+@keyframes sdlFloatA{0%,100%{transform:translate(0,0)}50%{transform:translate(-7px,-6px)}}
+@keyframes sdlFloatB{0%,100%{transform:translate(0,0)}50%{transform:translate(6px,5px)}}
+@keyframes sdlScan{0%,100%{transform:translateX(-7px);opacity:.28}50%{transform:translateX(12px);opacity:.95}}
+@keyframes sdlDraw{0%{stroke-dashoffset:42;opacity:.25}50%,100%{stroke-dashoffset:0;opacity:.95}}
+
+/* Keep existing card content crisp and above the animation */
+.sdl-path-card.sdl-animated-card > :not(.sdl-arch-motion){position:relative;z-index:2}
+.sdl-path-card.sdl-animated-card .sdl-path-index{transition:transform .28s ease,color .28s ease}
+.sdl-path-card.sdl-animated-card:hover .sdl-path-index,
+.sdl-path-card.sdl-animated-card:focus-within .sdl-path-index{transform:translateX(3px);color:var(--card-ink)!important}
+.sdl-path-card.sdl-animated-card h2{transition:transform .3s ease}
+.sdl-path-card.sdl-animated-card:hover h2,
+.sdl-path-card.sdl-animated-card:focus-within h2{transform:translateY(-2px)}
+.sdl-path-card.sdl-animated-card .sdl-path-open{
+  display:inline-flex;align-items:center;gap:7px;
+  margin-top:3px;padding:7px 10px!important;border-radius:999px!important;
+  background:color-mix(in srgb,var(--card-accent) 18%,#fff 82%)!important;
+  border:1px solid color-mix(in srgb,var(--card-accent) 48%,#fff 52%)!important;
+  color:#415062!important;
+  transition:transform .24s ease,background .24s ease,border-color .24s ease!important;
+}
+.sdl-path-card.sdl-animated-card:hover .sdl-path-open,
+.sdl-path-card.sdl-animated-card:focus-within .sdl-path-open{
+  transform:translateX(3px);
+  background:color-mix(in srgb,var(--card-accent) 30%,#fff 70%)!important;
+  border-color:var(--card-accent)!important;
+}
+
+/* Keyboard focus */
+.sdl-path-card.sdl-animated-card:focus-within{outline:3px solid color-mix(in srgb,var(--card-accent) 38%,transparent);outline-offset:3px}
+
+/* Mobile/touch: keep diagrams visible but calm */
+@media(hover:none){
+  .sdl-arch-motion{opacity:.28;transform:scale(1.035)}
+  .sdl-arch-motion:after{opacity:.72}
+  .sdl-path-card.sdl-animated-card{transform:none!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .sdl-path-card.sdl-animated-card,.sdl-arch-motion,.sdl-path-card.sdl-animated-card *{animation:none!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  .sdl-path-card.sdl-animated-card:hover,.sdl-path-card.sdl-animated-card:focus-within{transform:none!important}
+  .sdl-arch-motion{opacity:.34!important;transform:none!important}
+}
