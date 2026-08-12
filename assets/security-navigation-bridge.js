@@ -59,6 +59,11 @@ function loadLocalization(){
   extended.src='./assets/i18n-core-extended-pt.js?v=1';extended.async=false;extended.dataset.sdlCoreExtendedI18n='true';
   document.body.appendChild(extended);
  }
+ if(!document.querySelector('script[data-sdl-core-content-i18n]')){
+  const content=document.createElement('script');
+  content.src='./assets/i18n-core-content-pt.js?v=1';content.async=false;content.dataset.sdlCoreContentI18n='true';
+  document.body.appendChild(content);
+ }
  if(!document.querySelector('script[data-sdl-i18n-sync]')){
   const sync=document.createElement('script');
   sync.src='./assets/i18n-core-language-sync.js?v=1';sync.async=false;sync.dataset.sdlI18nSync='true';
