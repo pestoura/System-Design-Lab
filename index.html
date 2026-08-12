@@ -41,29 +41,23 @@ html,body{margin:0;background:#0B0D10;color:#F5F7FA;font-family:Inter,system-ui,
     [/0xff4757/gi,'0xFF5C70'],[/0xa855f7/gi,'0x4EA1FF'],[/0xec4899/gi,'0xF06292'],[/0x060913/gi,'0x0B0D10'],
     [/0x0a1628/gi,'0x1A2027'],[/0x0d1e38/gi,'0x242C35']
   ];
-
   try{
     if(status)status.textContent='Loading application core…';
     const response=await fetch('./runtime/core.payload',{cache:'no-store'});
     if(!response.ok)throw new Error('Application core returned HTTP '+response.status);
     let html=await response.text();
     if(!html.includes('<!DOCTYPE html>'))throw new Error('Application core is not valid HTML');
-
     if(status)status.textContent='Sanitizing application core…';
-
     html=html.replace(/<svg\b[^>]*\bwidth=["']0["'][^>]*\bheight=["']0["'][^>]*>[\s\S]*?<\/svg>\s*/gi,'');
     html=html.replace(/<metadata\b[^>]*>[\s\S]*?<\/metadata>\s*/gi,'');
     html=html.replace(/<footer\s+id=["']footer["']>[\s\S]*?<\/footer>/i,'');
-
     const protectionStart=html.indexOf('<script>(function(){var _0xSDLW=');
     if(protectionStart>=0){
       const appStart=html.indexOf('const sections =',protectionStart);
       if(appStart<0)throw new Error('Unable to isolate application bootstrap');
       html=html.slice(0,protectionStart)+'<scr'+'ipt>\n'+html.slice(appStart);
     }
-
     if(status)status.textContent='Applying System Design Lab identity…';
-
     html=html.replace(/<title>[\s\S]*?<\/title>/i,'<title>System Design Lab | Interactive System & Security Architecture Lab</title>');
     html=html.replace(/<meta\s+name=["']description["'][^>]*>/i,'<meta name="description" content="Interactive laboratory for System Design, Distributed Systems, Security Architecture, DevSecOps and cybersecurity simulations.">');
     html=html.replace(/<meta\s+name=["']author["'][^>]*>/i,'<meta name="author" content="Pedro Estoura">');
@@ -74,13 +68,8 @@ html,body{margin:0;background:#0B0D10;color:#F5F7FA;font-family:Inter,system-ui,
     html=html.replace(/<meta\s+property=["']og:description["'][^>]*>/i,'<meta property="og:description" content="Interactive System Design and Security Architecture Laboratory.">');
     html=html.replace(/<meta\s+name=["']twitter:title["'][^>]*>/i,'<meta name="twitter:title" content="System Design Lab">');
     html=html.replace(/<meta\s+name=["']twitter:description["'][^>]*>/i,'<meta name="twitter:description" content="Interactive System Design & Security Architecture Lab">');
-
-    const ldJson='<scr'+'ipt type="application/ld+json">'+JSON.stringify({
-      '@context':'https://schema.org','@type':'WebSite','name':'System Design Lab',
-      'author':{'@type':'Person','name':'Pedro Estoura','url':'https://github.com/pestoura'}
-    })+'<'+'/scr'+'ipt>';
+    const ldJson='<scr'+'ipt type="application/ld+json">'+JSON.stringify({'@context':'https://schema.org','@type':'WebSite','name':'System Design Lab','author':{'@type':'Person','name':'Pedro Estoura','url':'https://github.com/pestoura'}})+'<'+'/scr'+'ipt>';
     html=html.replace(/<script\s+type=["']application\/ld\+json["']>[\s\S]*?<\/script>/i,ldJson);
-
     html=html.replace(/family=Poppins:wght@400;500;600;700;800/g,'family=Manrope:wght@400;500;600;700;800');
     html=html.replace(/(['"])Poppins\1,sans-serif/g,"'Manrope',sans-serif");
     html=html.replace(/(['"])Syne\1,sans-serif/g,"'Manrope',sans-serif");
@@ -88,30 +77,22 @@ html,body{margin:0;background:#0B0D10;color:#F5F7FA;font-family:Inter,system-ui,
     html=html.replace(/font-family=["']Poppins["']/g,'font-family="Manrope"');
     html=html.replace(/font-family=["']Syne["']/g,'font-family="Manrope"');
     html=html.replace(/font-family=["']Space Mono["']/g,'font-family="JetBrains Mono"');
-
     palette.forEach(function(pair){html=html.replace(pair[0],pair[1]);});
-
     html=html.replace(/<div class=["']nav-logo-icon["']>[\s\S]*?<\/div>/i,'<div class="nav-logo-icon">SD</div>');
     html=html.replace(/<span>System Design<\/span>/i,'<span>System Design Lab</span>');
     html=html.replace(/<div style=["']margin-bottom:16px["']>\s*<span class=["']badge badge-cyan["']>[^<]*<\/span>\s*<span class=["']badge badge-amber["']>[^<]*<\/span>\s*<span class=["']badge badge-green["']>[^<]*<\/span>\s*<\/div>/i,'<div style="margin-bottom:16px"><span class="badge badge-cyan">SYSTEM DESIGN</span><span class="badge badge-amber">SECURITY ARCHITECTURE</span><span class="badge badge-green">INTERACTIVE LABS</span></div>');
     html=html.replace(/<div class=["']hero-title["']>[\s\S]*?<\/div>/i,'<div class="hero-title">Design Systems.<br>Engineer Security.</div>');
     html=html.replace(/<div class=["']hero-sub["']>[\s\S]*?<\/div>/i,'<div class="hero-sub">Interactive lab for system design, distributed architectures, resilience and security engineering.</div>');
-
     const securityCss='<link rel="stylesheet" href="./assets/security-lab.css?v=1">';
     const securityJs='<scr'+'ipt src="./assets/security-lab.js?v=1"><'+'/scr'+'ipt>';
-    const securityBridge='<scr'+'ipt src="./assets/security-navigation-bridge.js?v=3"><'+'/scr'+'ipt>';
+    const securityBridge='<scr'+'ipt src="./assets/security-navigation-bridge.js?v=4"><'+'/scr'+'ipt>';
     html=html.replace(/<\/head>/i,securityCss+'\n</head>');
-
     const footer='<footer id="footer"><a href="https://github.com/pestoura" target="_blank" rel="noopener">© 2026 <strong>Pedro Estoura</strong> · System Design Lab</a></footer>';
     html=html.replace(/<\/body>/i,footer+'\n'+securityJs+'\n'+securityBridge+'\n</body>');
-
     if(/_0xSDLW|_SDL_AUTHOR/i.test(html))throw new Error('Legacy executable bootstrap was not fully removed');
     if(!html.includes('Pedro Estoura')||!html.includes('#FFB000')||!html.includes('#4EA1FF'))throw new Error('Identity transformation failed');
-
     if(status)status.textContent='Starting laboratory…';
-    document.open();
-    document.write(html);
-    document.close();
+    document.open();document.write(html);document.close();
   }catch(err){
     const boot=document.getElementById('boot');
     if(boot)boot.innerHTML='<div class="boot-card"><div class="boot-title">System Design <span class="boot-accent">Lab</span></div><div class="boot-sub">Unable to initialize the lab.<br><br><code>'+String(err.message||err)+'</code></div></div>';
