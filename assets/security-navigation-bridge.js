@@ -43,32 +43,19 @@ function loadAnimatedCards(){
   document.body.appendChild(script);
  }
 }
+function addScript(selector,src,attr){
+ if(document.querySelector(selector))return;
+ const script=document.createElement('script');
+ script.src=src;script.async=false;script.setAttribute(attr,'true');
+ document.body.appendChild(script);
+}
 function loadLocalization(){
- if(!document.querySelector('script[data-sdl-i18n]')){
-  const script=document.createElement('script');
-  script.src='./assets/i18n-pt.js?v=2';script.async=false;script.dataset.sdlI18n='true';
-  document.body.appendChild(script);
- }
- if(!document.querySelector('script[data-sdl-core-i18n]')){
-  const core=document.createElement('script');
-  core.src='./assets/i18n-core-pages-pt.js?v=1';core.async=false;core.dataset.sdlCoreI18n='true';
-  document.body.appendChild(core);
- }
- if(!document.querySelector('script[data-sdl-core-extended-i18n]')){
-  const extended=document.createElement('script');
-  extended.src='./assets/i18n-core-extended-pt.js?v=1';extended.async=false;extended.dataset.sdlCoreExtendedI18n='true';
-  document.body.appendChild(extended);
- }
- if(!document.querySelector('script[data-sdl-core-content-i18n]')){
-  const content=document.createElement('script');
-  content.src='./assets/i18n-core-content-pt.js?v=1';content.async=false;content.dataset.sdlCoreContentI18n='true';
-  document.body.appendChild(content);
- }
- if(!document.querySelector('script[data-sdl-i18n-sync]')){
-  const sync=document.createElement('script');
-  sync.src='./assets/i18n-core-language-sync.js?v=1';sync.async=false;sync.dataset.sdlI18nSync='true';
-  document.body.appendChild(sync);
- }
+ addScript('script[data-sdl-i18n]','./assets/i18n-pt.js?v=2','data-sdl-i18n');
+ addScript('script[data-sdl-core-i18n]','./assets/i18n-core-pages-pt.js?v=1','data-sdl-core-i18n');
+ addScript('script[data-sdl-core-extended-i18n]','./assets/i18n-core-extended-pt.js?v=1','data-sdl-core-extended-i18n');
+ addScript('script[data-sdl-core-content-i18n]','./assets/i18n-core-content-pt.js?v=1','data-sdl-core-content-i18n');
+ addScript('script[data-sdl-domain-pack]','./assets/i18n-domain-pack-pt.js?v=1','data-sdl-domain-pack');
+ addScript('script[data-sdl-i18n-sync]','./assets/i18n-core-language-sync.js?v=1','data-sdl-i18n-sync');
 }
 function boot(){patch();loadNavigationV2();loadSoftTheme();loadAnimatedCards();loadLocalization();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
