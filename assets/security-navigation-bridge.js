@@ -31,12 +31,24 @@ function loadSoftTheme(){
  link.rel='stylesheet';link.href='./assets/theme-soft.css?v=1';link.dataset.sdlSoftTheme='true';
  document.head.appendChild(link);
 }
+function loadAnimatedCards(){
+ if(!document.querySelector('link[data-sdl-animated-cards]')){
+  const link=document.createElement('link');
+  link.rel='stylesheet';link.href='./assets/animated-architecture-cards.css?v=1';link.dataset.sdlAnimatedCards='true';
+  document.head.appendChild(link);
+ }
+ if(!document.querySelector('script[data-sdl-animated-cards]')){
+  const script=document.createElement('script');
+  script.src='./assets/animated-architecture-cards.js?v=1';script.defer=true;script.dataset.sdlAnimatedCards='true';
+  document.body.appendChild(script);
+ }
+}
 function loadLocalization(){
  if(document.querySelector('script[data-sdl-i18n]'))return;
  const script=document.createElement('script');
  script.src='./assets/i18n-pt.js?v=2';script.defer=true;script.dataset.sdlI18n='true';
  document.body.appendChild(script);
 }
-function boot(){patch();loadNavigationV2();loadSoftTheme();loadLocalization();}
+function boot(){patch();loadNavigationV2();loadSoftTheme();loadAnimatedCards();loadLocalization();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
