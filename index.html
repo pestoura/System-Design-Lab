@@ -51,12 +51,10 @@ html,body{margin:0;background:#0B0D10;color:#F5F7FA;font-family:Inter,system-ui,
 
     if(status)status.textContent='Sanitizing application core…';
 
-    // Remove all hidden zero-size SVG metadata blocks before any runtime code executes.
     html=html.replace(/<svg\b[^>]*\bwidth=["']0["'][^>]*\bheight=["']0["'][^>]*>[\s\S]*?<\/svg>\s*/gi,'');
     html=html.replace(/<metadata\b[^>]*>[\s\S]*?<\/metadata>\s*/gi,'');
     html=html.replace(/<footer\s+id=["']footer["']>[\s\S]*?<\/footer>/i,'');
 
-    // Remove the previous source-protection bootstrap as one contiguous block.
     const protectionStart=html.indexOf('<script>(function(){var _0xSDLW=');
     if(protectionStart>=0){
       const appStart=html.indexOf('const sections =',protectionStart);
@@ -99,15 +97,14 @@ html,body{margin:0;background:#0B0D10;color:#F5F7FA;font-family:Inter,system-ui,
     html=html.replace(/<div class=["']hero-title["']>[\s\S]*?<\/div>/i,'<div class="hero-title">Design Systems.<br>Engineer Security.</div>');
     html=html.replace(/<div class=["']hero-sub["']>[\s\S]*?<\/div>/i,'<div class="hero-sub">Interactive lab for system design, distributed architectures, resilience and security engineering.</div>');
 
-    // Modular extension points. Security Engineering is intentionally kept outside the legacy core.
     const securityCss='<link rel="stylesheet" href="./assets/security-lab.css?v=1">';
     const securityJs='<scr'+'ipt src="./assets/security-lab.js?v=1"><'+'/scr'+'ipt>';
+    const securityBridge='<scr'+'ipt src="./assets/security-navigation-bridge.js?v=1"><'+'/scr'+'ipt>';
     html=html.replace(/<\/head>/i,securityCss+'\n</head>');
 
     const footer='<footer id="footer"><a href="https://github.com/pestoura" target="_blank" rel="noopener">© 2026 <strong>Pedro Estoura</strong> · System Design Lab</a></footer>';
-    html=html.replace(/<\/body>/i,footer+'\n'+securityJs+'\n</body>');
+    html=html.replace(/<\/body>/i,footer+'\n'+securityJs+'\n'+securityBridge+'\n</body>');
 
-    // Only block if the old executable protection bootstrap itself survived.
     if(/_0xSDLW|_SDL_AUTHOR/i.test(html))throw new Error('Legacy executable bootstrap was not fully removed');
     if(!html.includes('Pedro Estoura')||!html.includes('#FFB000')||!html.includes('#4EA1FF'))throw new Error('Identity transformation failed');
 
