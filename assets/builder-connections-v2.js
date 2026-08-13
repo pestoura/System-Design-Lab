@@ -14,6 +14,8 @@ function normalize(e,a,b){if(!e)return e;if(e.curvature==null)e.curvature=0;if(!
 function geom(e,a,b){const p0=anchor(a,b),p2=anchor(b,a),dx=p2.x-p0.x,dy=p2.y-p0.y,len=Math.hypot(dx,dy)||1,nx=-dy/len,ny=dx/len,curve=Number(e.curvature)||0;const p1={x:(p0.x+p2.x)/2+nx*curve,y:(p0.y+p2.y)/2+ny*curve};return{p0,p1,p2,len,nx,ny};}
 function q(g,t){const u=1-t;return{x:u*u*g.p0.x+2*u*t*g.p1.x+t*t*g.p2.x,y:u*u*g.p0.y+2*u*t*g.p1.y+t*t*g.p2.y};}
 function tangent(g,t){return{x:2*(1-t)*(g.p1.x-g.p0.x)+2*t*(g.p2.x-g.p1.x),y:2*(1-t)*(g.p1.y-g.p0.y)+2*t*(g.p2.y-g.p1.y)};}
+function geometryForEdge(e){const b=B();if(!b||!e)return null;const a=b.nodes.find(n=>n.id===e.from),z=b.nodes.find(n=>n.id===e.to);if(!a||!z)return null;normalize(e,a,z);return geom(e,a,z);}
+function pointAt(e,t){const g=geometryForEdge(e);return g?q(g,Math.max(0,Math.min(1,Number(t)||0))):null;}
 function colorFor(e){return e.highlight?COLORS.critical:(COLORS[e.kind]||COLORS.data);}
 function dashFor(e){if(e.style==='dashed')return[8,6];if(e.style==='dotted')return[2,6];if(e.kind==='async')return[7,5];return[];}
 function path(ctx,g){ctx.beginPath();ctx.moveTo(g.p0.x,g.p0.y);ctx.quadraticCurveTo(g.p1.x,g.p1.y,g.p2.x,g.p2.y);}
@@ -52,5 +54,5 @@ function bind(){const c=canvas(),b=B();if(!c||!b||c.dataset.sdlConnectionsV2)ret
  return true;}
 function init(){const b=B();if(!b||!b.canvas)return false;(b.edges||[]).forEach(e=>{const a=b.nodes.find(n=>n.id===e.from),bb=b.nodes.find(n=>n.id===e.to);normalize(e,a,bb);});bind();C.ready=true;return true;}
 let tries=0;const t=setInterval(()=>{tries++;if(init()||tries>260)clearInterval(t);},75);
-window.SDLBuilderConnectionsV2={state:C,draw,select,normalize};
+window.SDLBuilderConnectionsV2={state:C,draw,select,normalize,geometryForEdge,pointAt};
 })();
