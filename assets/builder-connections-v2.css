@@ -1,0 +1,9 @@
+/* System Design Lab — editable elegant connections for 2D Architecture Builder */
+#builder-canvas-wrap{position:relative}
+.sdl-edge-editor{position:absolute;right:12px;bottom:12px;z-index:24;width:248px;padding:12px;border:1px solid rgba(255,255,255,.11);border-radius:14px;background:rgba(13,18,24,.94);backdrop-filter:blur(16px);box-shadow:0 16px 48px rgba(0,0,0,.34);font-family:Inter,Manrope,sans-serif;color:#e9eef2}
+.sdl-edge-editor[hidden]{display:none}
+.sdl-edge-editor-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}.sdl-edge-editor-head strong{font-size:11px;letter-spacing:.08em;text-transform:uppercase}.sdl-edge-editor-close{margin-left:auto;border:0;background:transparent;color:#8d9aa6;cursor:pointer;font-size:16px}
+.sdl-edge-field{display:grid;grid-template-columns:76px 1fr;align-items:center;gap:8px;margin:7px 0}.sdl-edge-field label{font-size:9px;color:#8f9ba7;text-transform:uppercase;letter-spacing:.06em}.sdl-edge-field input,.sdl-edge-field select{min-width:0;width:100%;height:30px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:#151c24;color:#e9eef2;padding:0 8px;font:500 10px Inter,sans-serif;outline:none}.sdl-edge-field input[type=range]{padding:0}
+.sdl-edge-actions{display:flex;gap:7px;margin-top:10px}.sdl-edge-actions button{flex:1;height:30px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:#19222c;color:#cfd8df;font:600 10px Inter,sans-serif;cursor:pointer}.sdl-edge-actions .danger{color:#ff8a98;border-color:rgba(255,110,130,.22);background:rgba(255,80,100,.07)}
+.sdl-edge-editor-note{font-size:9px;color:#73808b;line-height:1.45;margin-top:8px}
+@media(max-width:850px){.sdl-edge-editor{width:220px;right:8px;bottom:8px}.sdl-edge-field{grid-template-columns:64px 1fr}}
