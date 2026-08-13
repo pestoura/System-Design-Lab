@@ -2,6 +2,14 @@
 (function(){
 'use strict';
 
+if(!document.querySelector('script[data-sdl-builder-simulation-paths]')){
+  const simPath=document.createElement('script');
+  simPath.src='./assets/builder-simulation-paths.js?v=1';
+  simPath.async=false;
+  simPath.dataset.sdlBuilderSimulationPaths='true';
+  document.body.appendChild(simPath);
+}
+
 const ALIASES={
   '3dlab':'lab3d',
   '3d-lab':'lab3d',
