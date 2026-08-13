@@ -1,8 +1,9 @@
 /* System Design Lab — 3D Architecture Lab v2 */
+#section-lab3d.sdl3d-page-v2>.lab3d-preset-bar,#section-lab3d.sdl3d-page-v2>.lab3d-controls{display:none!important;}
 #lab-3d.sdl3d-v2{
   position:relative!important;
-  min-height:620px!important;
-  height:620px!important;
+  min-height:680px!important;
+  height:680px!important;
   overflow:hidden!important;
   border:1px solid rgba(107,122,138,.22)!important;
   border-radius:20px!important;
@@ -25,11 +26,19 @@
 .sdl3d-mode-failure.active{background:rgba(214,161,170,.18);color:#ffd9df;box-shadow:inset 0 0 0 1px rgba(214,161,170,.3);}
 .sdl3d-preset{min-width:176px;padding:8px 32px 8px 11px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(19,25,33,.82);color:#e8eef5;font:600 11px Manrope,Inter,sans-serif;outline:none;cursor:pointer;pointer-events:auto;}
 .sdl3d-spacer{flex:1;}
+.sdl3d-scenarios{position:absolute;left:16px;right:16px;top:66px;display:flex;gap:5px;align-items:center;padding:7px;border-radius:13px;pointer-events:auto;overflow-x:auto;scrollbar-width:none;}
+.sdl3d-scenarios::-webkit-scrollbar{display:none;}
+.sdl3d-scenario-label{font:700 8px/1 Manrope,Inter,sans-serif;letter-spacing:1px;color:#778492;padding:0 4px;white-space:nowrap;}
+.sdl3d-scenario-btn,.sdl3d-scenario-reset{border:1px solid rgba(255,255,255,.07);border-radius:8px;background:rgba(255,255,255,.035);color:#aeb8c4;padding:7px 9px;font:600 9px/1 Manrope,Inter,sans-serif;cursor:pointer;white-space:nowrap;transition:.18s ease;}
+.sdl3d-scenario-btn:hover:not(:disabled),.sdl3d-scenario-reset:hover{color:#fff;background:rgba(255,255,255,.08);transform:translateY(-1px);}
+.sdl3d-scenario-btn.active{background:rgba(214,161,170,.2);color:#ffe0e5;border-color:rgba(214,161,170,.36);box-shadow:0 0 18px rgba(214,161,170,.12);}
+.sdl3d-scenario-btn:disabled{opacity:.28;cursor:not-allowed;}
+.sdl3d-scenario-reset{margin-left:auto;color:#c4ced8;border-color:rgba(145,180,216,.18);}
 .sdl3d-hud{position:absolute;left:16px;bottom:16px;display:grid;grid-template-columns:repeat(4,minmax(74px,1fr));gap:6px;width:min(430px,calc(100% - 32px));padding:8px;border-radius:14px;pointer-events:none;}
 .sdl3d-metric{padding:8px 9px;border-radius:9px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.055);min-width:0;}
 .sdl3d-metric span{display:block;color:#8995a3;text-transform:uppercase;letter-spacing:.65px;font-size:8px;margin-bottom:3px;}
 .sdl3d-metric strong{font:700 13px/1.2 "JetBrains Mono",monospace;color:#edf3f8;white-space:nowrap;}
-.sdl3d-inspector{position:absolute;right:16px;top:72px;width:238px;padding:14px;border-radius:16px;pointer-events:auto;transition:opacity .2s ease,transform .2s ease;}
+.sdl3d-inspector{position:absolute;right:16px;top:112px;width:238px;padding:14px;border-radius:16px;pointer-events:auto;transition:opacity .2s ease,transform .2s ease;}
 .sdl3d-inspector.empty{opacity:.72;}
 .sdl3d-eyebrow{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#8793a1;margin-bottom:7px;}
 .sdl3d-inspector h4{margin:0 0 4px;color:#f4f7fa;font-size:16px;line-height:1.2;}
@@ -45,24 +54,8 @@
 .sdl3d-dot{width:7px;height:7px;border-radius:50%;box-shadow:0 0 8px currentColor;}
 .sdl3d-tooltip{position:absolute;z-index:8;display:none;pointer-events:none;padding:6px 8px;border-radius:8px;background:rgba(8,12,17,.9);border:1px solid rgba(255,255,255,.12);color:#eef4f9;font-size:9px;white-space:nowrap;transform:translate(12px,12px);}
 .sdl3d-help{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);padding:6px 10px;border-radius:9px;color:#84909d;font-size:9px;pointer-events:none;white-space:nowrap;}
-.sdl3d-incident{position:absolute;left:16px;top:72px;max-width:330px;padding:9px 11px;border-radius:11px;color:#ffdce2;font-size:10px;display:none;pointer-events:none;}
+.sdl3d-incident{position:absolute;left:16px;top:112px;max-width:330px;padding:9px 11px;border-radius:11px;color:#ffdce2;font-size:10px;display:none;pointer-events:none;}
 .sdl3d-incident.show{display:block;background:rgba(104,38,52,.62);border:1px solid rgba(214,161,170,.28);}
-#section-3dlab .lab3d-controls{border-radius:14px!important;padding:8px!important;background:rgba(255,255,255,.55)!important;border:1px solid var(--border)!important;margin-bottom:12px!important;}
-#section-3dlab .lab3d-btn{border-radius:9px!important;transition:.18s ease!important;}
-#section-3dlab .lab3d-btn:hover{transform:translateY(-1px);}
-@media(max-width:900px){
-  #lab-3d.sdl3d-v2{height:680px!important;min-height:680px!important;}
-  .sdl3d-toolbar{right:12px;left:12px;}
-  .sdl3d-inspector{top:auto;bottom:92px;right:12px;width:210px;}
-  .sdl3d-legend{display:none;}
-  .sdl3d-hud{left:12px;bottom:12px;width:calc(100% - 24px);grid-template-columns:repeat(4,1fr);}
-  .sdl3d-help{display:none;}
-}
-@media(max-width:620px){
-  #lab-3d.sdl3d-v2{height:720px!important;min-height:720px!important;}
-  .sdl3d-spacer,.sdl3d-camerabar{display:none;}
-  .sdl3d-preset{order:-1;width:100%;}
-  .sdl3d-inspector{left:12px;right:12px;width:auto;bottom:112px;}
-  .sdl3d-hud{grid-template-columns:repeat(2,1fr);}
-}
-@media(prefers-reduced-motion:reduce){.sdl3d-btn,.sdl3d-inspector{transition:none!important;}}
+@media(max-width:900px){#lab-3d.sdl3d-v2{height:740px!important;min-height:740px!important;}.sdl3d-toolbar{right:12px;left:12px;}.sdl3d-scenarios{left:12px;right:12px;}.sdl3d-inspector{top:auto;bottom:92px;right:12px;width:210px;}.sdl3d-legend{display:none;}.sdl3d-hud{left:12px;bottom:12px;width:calc(100% - 24px);grid-template-columns:repeat(4,1fr);}.sdl3d-help{display:none;}}
+@media(max-width:620px){#lab-3d.sdl3d-v2{height:780px!important;min-height:780px!important;}.sdl3d-spacer,.sdl3d-camerabar{display:none;}.sdl3d-preset{order:-1;width:100%;}.sdl3d-scenarios{top:102px;}.sdl3d-inspector{left:12px;right:12px;width:auto;bottom:112px;}.sdl3d-hud{grid-template-columns:repeat(2,1fr);}}
+@media(prefers-reduced-motion:reduce){.sdl3d-btn,.sdl3d-inspector,.sdl3d-scenario-btn{transition:none!important;}}
