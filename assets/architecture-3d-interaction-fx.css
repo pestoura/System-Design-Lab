@@ -1,7 +1,0 @@
-/* Interaction FX for 3D Architecture Lab */
-#lab-3d .sdl3d-video-ref-help{position:absolute;left:16px;bottom:76px;z-index:8;padding:8px 10px;border-radius:10px;display:flex;flex-direction:column;gap:2px;pointer-events:none;color:#aab5c1;font:500 9px Manrope,Inter,sans-serif}
-#lab-3d .sdl3d-video-ref-help strong{color:#dff7e7;font-size:8px;letter-spacing:1px}
-#lab-3d .sdl3d-video-ref-help span{white-space:nowrap}
-#lab-3d canvas{cursor:grab}
-#lab-3d canvas:active{cursor:grabbing}
-@media(max-width:800px){#lab-3d .sdl3d-video-ref-help{display:none}}
