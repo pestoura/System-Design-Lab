@@ -26,8 +26,8 @@ function loadVendorComponents(){addCss('link[data-sdl-vendor-components]','./ass
 function loadArchitectureSimulationV2(){addCss('link[data-sdl-architecture-sim-v2]','./assets/architecture-simulation-v2.css?v=1','data-sdl-architecture-sim-v2');addScript('script[data-sdl-architecture-sim-v2]','./assets/architecture-simulation-v2.js?v=1','data-sdl-architecture-sim-v2');}
 function loadArchitectureScenariosV2(){addCss('link[data-sdl-architecture-scenarios-v2]','./assets/architecture-scenarios-v2.css?v=1','data-sdl-architecture-scenarios-v2');addScript('script[data-sdl-architecture-scenarios-v2]','./assets/architecture-scenarios-v2.js?v=1','data-sdl-architecture-scenarios-v2');}
 function loadArchitecture3DV2(){
- addCss('link[data-sdl-architecture-3d-v2]','./assets/architecture-3d-v2.css?v=1','data-sdl-architecture-3d-v2');
- addScript('script[data-sdl-architecture-3d-v2]','./assets/architecture-3d-v2.js?v=1','data-sdl-architecture-3d-v2');
+ addCss('link[data-sdl-architecture-3d-v2]','./assets/architecture-3d-v2.css?v=2','data-sdl-architecture-3d-v2');
+ addScript('script[data-sdl-architecture-3d-v2]','./assets/architecture-3d-v2.js?v=2','data-sdl-architecture-3d-v2');
  addScript('script[data-sdl-architecture-3d-v2-compat]','./assets/architecture-3d-v2-compat.js?v=1','data-sdl-architecture-3d-v2-compat');
 }
 function loadDeepLinkRouting(){addScript('script[data-sdl-deep-link]','./assets/deep-link-routing.js?v=1','data-sdl-deep-link');}
