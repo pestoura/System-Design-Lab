@@ -27,15 +27,14 @@ function loadArchitectureSimulationV2(){addCss('link[data-sdl-architecture-sim-v
 function loadArchitectureScenariosV2(){addCss('link[data-sdl-architecture-scenarios-v2]','./assets/architecture-scenarios-v2.css?v=1','data-sdl-architecture-scenarios-v2');addScript('script[data-sdl-architecture-scenarios-v2]','./assets/architecture-scenarios-v2.js?v=1','data-sdl-architecture-scenarios-v2');}
 function loadArchitecture3DV2(){
  addCss('link[data-sdl-architecture-3d-v2]','./assets/architecture-3d-v2.css?v=3','data-sdl-architecture-3d-v2');
- /* Compatibility bootstrap must run first: it binds the real legacy container to v2. */
  addScript('script[data-sdl-architecture-3d-v2-compat]','./assets/architecture-3d-v2-compat.js?v=2','data-sdl-architecture-3d-v2-compat');
  addScript('script[data-sdl-architecture-3d-v2]','./assets/architecture-3d-v2.js?v=3','data-sdl-architecture-3d-v2');
 }
-function loadArchitecture3DInteractionFX(){
- addCss('link[data-sdl-architecture-3d-fx]','./assets/architecture-3d-interaction-fx.css?v=1','data-sdl-architecture-3d-fx');
- addScript('script[data-sdl-architecture-3d-fx]','./assets/architecture-3d-interaction-fx.js?v=1','data-sdl-architecture-3d-fx');
+function loadBuilderInteractionFX(){
+ addCss('link[data-sdl-builder-fx]','./assets/builder-interaction-fx.css?v=1','data-sdl-builder-fx');
+ addScript('script[data-sdl-builder-fx]','./assets/builder-interaction-fx.js?v=1','data-sdl-builder-fx');
 }
 function loadDeepLinkRouting(){addScript('script[data-sdl-deep-link]','./assets/deep-link-routing.js?v=1','data-sdl-deep-link');}
-function boot(){patch();loadNavigationV2();loadSoftTheme();loadAnimatedCards();loadLocalization();loadVendorComponents();loadArchitectureSimulationV2();loadArchitectureScenariosV2();loadArchitecture3DV2();loadArchitecture3DInteractionFX();loadDeepLinkRouting();}
+function boot(){patch();loadNavigationV2();loadSoftTheme();loadAnimatedCards();loadLocalization();loadVendorComponents();loadArchitectureSimulationV2();loadArchitectureScenariosV2();loadArchitecture3DV2();loadBuilderInteractionFX();loadDeepLinkRouting();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
