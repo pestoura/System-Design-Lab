@@ -1,6 +1,40 @@
-/* Small compatibility guard for 3D v2 visual mode transitions. */
+/* Compatibility/bootstrap guard for 3D Architecture Lab v2. */
 (function(){
 'use strict';
+
+function prepareDom(){
+  const legacyWrap=document.getElementById('lab3d-canvas-wrap');
+  if(legacyWrap&&!document.getElementById('lab-3d')){
+    legacyWrap.id='lab-3d';
+    legacyWrap.dataset.legacyId='lab3d-canvas-wrap';
+  }
+  const section=document.getElementById('section-lab3d');
+  if(section){
+    section.classList.add('sdl3d-page-v2');
+    const oldPresets=section.querySelector('.lab3d-preset-bar');
+    if(oldPresets)oldPresets.style.display='none';
+  }
+}
+
+/* Run immediately, before the v2 init interval gets its first tick. */
+prepareDom();
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',prepareDom,{once:true});
+
+function guardLegacy(){
+  const api=window.SDLArchitecture3DV2;
+  if(!api||!api.state||!api.state.ready)return false;
+  if(!window.__sdlLegacyInitLab3D&&typeof window.initLab3D==='function')window.__sdlLegacyInitLab3D=window.initLab3D;
+  window.initLab3D=function(){
+    prepareDom();
+    try{window.dispatchEvent(new Event('resize'));}catch(e){}
+    return true;
+  };
+  return true;
+}
+
+let guardTries=0;
+const guardTimer=setInterval(function(){guardTries++;if(guardLegacy()||guardTries>160)clearInterval(guardTimer);},50);
+
 function restore(){
  const api=window.SDLArchitecture3DV2;if(!api||!api.state||!api.state.ready)return;
  const s=api.state,focus=s.selected?new Set([s.selected]):null;
@@ -20,7 +54,8 @@ function restore(){
    });
  });
 }
-document.addEventListener('click',()=>setTimeout(restore,0),true);
-document.addEventListener('sdl:languagechange',()=>setTimeout(restore,80));
+
+document.addEventListener('click',()=>setTimeout(function(){prepareDom();guardLegacy();restore();},0),true);
+document.addEventListener('sdl:languagechange',()=>setTimeout(function(){prepareDom();guardLegacy();restore();},80));
 window.addEventListener('resize',()=>setTimeout(restore,0));
 })();
