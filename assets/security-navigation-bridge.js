@@ -25,6 +25,7 @@ function loadLocalization(){
 function loadVendorComponents(){addCss('link[data-sdl-vendor-components]','./assets/vendor-components.css?v=1','data-sdl-vendor-components');addScript('script[data-sdl-vendor-components]','./assets/vendor-components.js?v=1','data-sdl-vendor-components');}
 function loadArchitectureSimulationV2(){addCss('link[data-sdl-architecture-sim-v2]','./assets/architecture-simulation-v2.css?v=1','data-sdl-architecture-sim-v2');addScript('script[data-sdl-architecture-sim-v2]','./assets/architecture-simulation-v2.js?v=1','data-sdl-architecture-sim-v2');}
 function loadArchitectureScenariosV2(){addCss('link[data-sdl-architecture-scenarios-v2]','./assets/architecture-scenarios-v2.css?v=1','data-sdl-architecture-scenarios-v2');addScript('script[data-sdl-architecture-scenarios-v2]','./assets/architecture-scenarios-v2.js?v=1','data-sdl-architecture-scenarios-v2');}
-function boot(){patch();loadNavigationV2();loadSoftTheme();loadAnimatedCards();loadLocalization();loadVendorComponents();loadArchitectureSimulationV2();loadArchitectureScenariosV2();}
+function loadArchitecture3DV2(){addCss('link[data-sdl-architecture-3d-v2]','./assets/architecture-3d-v2.css?v=1','data-sdl-architecture-3d-v2');addScript('script[data-sdl-architecture-3d-v2]','./assets/architecture-3d-v2.js?v=1','data-sdl-architecture-3d-v2');}
+function boot(){patch();loadNavigationV2();loadSoftTheme();loadAnimatedCards();loadLocalization();loadVendorComponents();loadArchitectureSimulationV2();loadArchitectureScenariosV2();loadArchitecture3DV2();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
