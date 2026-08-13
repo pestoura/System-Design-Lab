@@ -30,6 +30,7 @@ function loadArchitecture3DV2(){
  addScript('script[data-sdl-architecture-3d-v2]','./assets/architecture-3d-v2.js?v=1','data-sdl-architecture-3d-v2');
  addScript('script[data-sdl-architecture-3d-v2-compat]','./assets/architecture-3d-v2-compat.js?v=1','data-sdl-architecture-3d-v2-compat');
 }
-function boot(){patch();loadNavigationV2();loadSoftTheme();loadAnimatedCards();loadLocalization();loadVendorComponents();loadArchitectureSimulationV2();loadArchitectureScenariosV2();loadArchitecture3DV2();}
+function loadDeepLinkRouting(){addScript('script[data-sdl-deep-link]','./assets/deep-link-routing.js?v=1','data-sdl-deep-link');}
+function boot(){patch();loadNavigationV2();loadSoftTheme();loadAnimatedCards();loadLocalization();loadVendorComponents();loadArchitectureSimulationV2();loadArchitectureScenariosV2();loadArchitecture3DV2();loadDeepLinkRouting();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
