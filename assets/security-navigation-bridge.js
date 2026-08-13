@@ -23,7 +23,7 @@ function loadLocalization(){
  addScript('script[data-sdl-i18n-sync]','./assets/i18n-core-language-sync.js?v=1','data-sdl-i18n-sync');
 }
 function loadVendorComponents(){addCss('link[data-sdl-vendor-components]','./assets/vendor-components.css?v=1','data-sdl-vendor-components');addScript('script[data-sdl-vendor-components]','./assets/vendor-components.js?v=1','data-sdl-vendor-components');}
-function loadSystemDesignIcons(){addScript('script[data-sdl-system-icons]','./assets/builder-system-icons.js?v=1','data-sdl-system-icons');}
+function loadSystemDesignIcons(){addScript('script[data-sdl-system-icons]','./assets/builder-system-icons.js?v=2','data-sdl-system-icons');}
 function loadArchitectureSimulationV2(){addCss('link[data-sdl-architecture-sim-v2]','./assets/architecture-simulation-v2.css?v=1','data-sdl-architecture-sim-v2');addScript('script[data-sdl-architecture-sim-v2]','./assets/architecture-simulation-v2.js?v=1','data-sdl-architecture-sim-v2');}
 function loadArchitectureScenariosV2(){addCss('link[data-sdl-architecture-scenarios-v2]','./assets/architecture-scenarios-v2.css?v=1','data-sdl-architecture-scenarios-v2');addScript('script[data-sdl-architecture-scenarios-v2]','./assets/architecture-scenarios-v2.js?v=1','data-sdl-architecture-scenarios-v2');}
 function loadArchitecture3DV2(){
@@ -33,7 +33,7 @@ function loadArchitecture3DV2(){
 }
 function loadBuilderInteractionFX(){
  addCss('link[data-sdl-builder-fx]','./assets/builder-interaction-fx.css?v=1','data-sdl-builder-fx');
- addScript('script[data-sdl-builder-fx]','./assets/builder-interaction-fx.js?v=1','data-sdl-builder-fx');
+ addScript('script[data-sdl-builder-fx]','./assets/builder-interaction-fx.js?v=2','data-sdl-builder-fx');
 }
 function loadDeepLinkRouting(){addScript('script[data-sdl-deep-link]','./assets/deep-link-routing.js?v=1','data-sdl-deep-link');}
 function boot(){patch();loadNavigationV2();loadSoftTheme();loadAnimatedCards();loadLocalization();loadVendorComponents();loadSystemDesignIcons();loadArchitectureSimulationV2();loadArchitectureScenariosV2();loadArchitecture3DV2();loadBuilderInteractionFX();loadDeepLinkRouting();}
